@@ -1,0 +1,47 @@
+// Priors and rules file
+// *********************
+
+[PARAMETERS]
+//#isInt? #name   #dist.#min  #max
+//all Ns are in number of haploid individuals
+1  N0$     unif     100  1000  hide
+1  N1$     unif     100  1000  hide
+1  N2$     unif     100  1000  hide
+1  N3$     unif     100  1000  hide
+1  N4$     unif     100  1000  hide
+1  N5$     unif     100  1000  hide
+1  N6$     unif     100  1000  hide
+1  N7$     unif     100  1000  hide
+1  N8$     unif     100  1000  hide
+1  N9$     unif     100  1000  hide
+1  N10$    unif     100  1000  hide
+1  N11$    unif     100  1000  hide
+1  N12$    unif     100  1000  hide
+1  N13$    unif     100  1000  hide
+1  N14$    unif     100  1000  hide
+1  N15$    unif     100  1000  hide
+0  M0$	unif	1e-3	1e-1	output
+
+[RULES]
+
+[COMPLEX PARAMETERS]
+
+//Assume an island haploid population size of 1000 for all islands 
+1	NPOP0$ = N0$*2	output
+1	NPOP1$ = N1$*2	output
+1	NPOP2$ = N2$*2	output
+1	NPOP3$ = N3$*2	output
+1	NPOP4$ = N4$*2	output
+1	NPOP5$ = N5$*2	output
+1	NPOP6$ = N6$*2	output
+1	NPOP7$ = N7$*2 	output
+1	NPOP8$ = N8$*2	output
+1	NPOP9$ = N9$*2	output
+1	NPOP10$ = N10$*2	output
+1	NPOP11$ = N11$*2	output
+1	NPOP12$ = N12$*2	output
+1	NPOP13$ = N13$*2	output
+1	NPOP14$ = N14$*2	output
+1	NPOP15$ = N15$*2	output
+0	M1$ = M0$/15	hide
+

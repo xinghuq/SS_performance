@@ -1,0 +1,52 @@
+echo "Now we are lanching simulations for five demographic scenairos!"
+# contains code to lanch simulations (16Panmixia.sh, here we have put all the .sh code below):./fsc25 -t 16Panmixia.tpl -n 1000 -e 16Panmixia.est -E 100 -g 
+date
+echo "Lanching simulations for Panmixia model!"
+date
+./fsc25 -t 16Panmixia.tpl -n 1000 -e 16Panmixia.est -E 100 -g --seed 123
+echo "Simulation Panmixia is done!"
+date
+##Simulation for Island model
+echo "Lanching simulations of Island model!"
+date
+./fsc25 -t 16PopIsland.tpl -n 1000 -e 16PopIsland.est -E 100 -g --seed 123
+echo "Simulation Island is done!"
+date
+
+##Simulation for HierIsland model
+echo "Lanching simulations of HierIsland model!"
+date
+./fsc25 -t 16PophierIsland.tpl -n 1000 -e 16PophierIsland.est -E 100 -g --seed 123
+echo "Simulation HierIsland is done!"
+date
+
+##Simulation for stepping stone model
+echo "Lanching simulations of stepping stone model!"
+date
+./fsc25 -t 16Popsteppingstone.tpl -n 1000 -e 16Popsteppingstone.est -E 100 -g --seed 123
+echo "Simulation stepping stone is done!"
+date
+
+##Simulation for stepping stone model
+echo "Lanching simulations of hier stepping stone model!"
+date
+./fsc25 -t 16Pophiersteppingstone.tpl -n 1000 -e 16Pophiersteppingstone.est -E 100 -g --seed 123
+echo "Simulation hier stepping stone is done!"
+date
+
+echo "Simulations for five models are finished"
+data
+
+
+## we need stratification files for calculating our hier and pwirwise metrics
+cp ./str_Island_Panmixia/{pops.txt,Str.txt,region.txt,strpairwise.txt} ./16Panmixia 16PopIsland 16PophierIsland 16Popsteppingstone 16Pophiersteppingstone
+
+date
+chmod 755 /Users/xinghu/Test_100rep
+echo " Now we are calculating summary statistics!"
+Rscript Pipeline_hierSS.txt
+echo " Summary statistics for Island model is done!"
+
+date
+echo "finished !"
+date

@@ -1,0 +1,12 @@
+// Priors and rules file
+// *********************
+[PARAMETERS]
+//#isInt? #name   #dist.#min  #max
+//all Ns are in number of haploid individuals
+1  N0$     unif     1600  16000  hide
+
+[RULES]
+
+[COMPLEX PARAMETERS]
+//Assume an island haploid population size of 1000 for all islands 
+1	NPOP0$ = N0$*2	output
