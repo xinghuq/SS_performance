@@ -1,6 +1,6 @@
 # SS_performance
 
-## This is the depository to store files and scripts on Qin et al, 2019.....
+## This is the depository to store files and scripts on Qin,X., Gaggiotti,OE. 2021. Information-based summary statistics for spatial demography inference. In preparation.
 
 ## Depository contains five folders: Simulations, KLFDA, Randomforest, Deep Neural Network, and t-sne. 
 "Simulations" contains the pipeline simulating the demographic scenarios and calculating the summary statistics.
