@@ -1,0 +1,89 @@
+#library("RSNNS")
+library("caret")
+library("caretEnsemble")
+library("e1071")
+set.seed(999)
+options(warn=-1)
+load("trained_data_SS.RData")
+econtrol <- trainControl(method="LOOCV")
+gbmGrid_mlpWeightDecayML <-  expand.grid(layer1 = c(1,5, 10,15), 
+                                         layer2=c(0,5,10,15),
+                                         layer3=c(0,5,10,15),
+                                         decay = c(0,1e-5,1e-4,1e-3,1e-2,1e-1))
+
+#gbmGrid_model_mlpWeightDecayML_SSq0 <- train(Model ~., data=SSq0,
+#                                     method=c("mlpWeightDecayML"),
+ #                                    preProcess=c("scale","center"),
+  #                                   trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+#write.csv(gbmGrid_model_mlpWeightDecayML_SSq0$results,file = "gbmGrid_model_mlpWeightDecayML_SSq0.csv") 
+
+#cat(print(gbmGrid_model_mlpWeightDecayML_SSq0$finalModel),file = "gbmGrid_model_mlpWeightDecayML_SSq0_finalmodel.txt")
+
+#confusionMatrix(predict(gbmGrid_model_mlpWeightDecayML_SSq0,SSq0[,-1]),reference = SSq0$Model)
+
+#write.csv(gbmGrid_model_mlpWeightDecayML_SSq0$finalModel)
+#confusionMatrix(predict.train(gbmGrid_model_mlpWeightDecayML_SSq0),SSq0$Model) 
+
+gbmGrid_model_mlpWeightDecayML_SSq1 <- train(Model ~., data=SSq1,
+                                     method=c("mlpWeightDecayML"),
+                                     preProcess=c("scale","center"),
+                                     trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq1$results,file = "gbmGrid_model_mlpWeightDecayML_SSq1.csv") 
+
+capture.output(gbmGrid_model_mlpWeightDecayML_SSq1$finalModel,file = "gbmGrid_model_mlpWeightDecayML_SSq1_finalmodel.txt")
+
+save.image(file="mlpWeightDecayML_SSq1.RData")
+date()
+options(warn=-1)
+gbmGrid_model_mlpWeightDecayML_SSq2 <- train(Model ~., data=SSq2,
+                                     method=c("mlpWeightDecayML"),
+                                     preProcess=c("scale","center"),
+                                     trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq2$results,file = "gbmGrid_model_mlpWeightDecayML_SSq2.csv") 
+save.image(file="mlpWeightDecayML_SSq2.RData")
+date()
+gbmGrid_model_mlpWeightDecayML_SS_trad <- train(Model ~., data=SS_tra,
+                                        method=c("mlpWeightDecayML"),
+                                        preProcess=c("scale","center"),
+                                        trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SS_trad$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Ar_He.csv") 
+
+save.image(file="mlpWeightDecayML_SSq0_q2.RData")
+date()
+gbmGrid_model_mlpWeightDecayML_SS_shannon <- train(Model ~., data=Shannon_all,
+                                           method=c("mlpWeightDecayML"),
+                                           preProcess=c("scale","center"),
+                                           trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SS_shannon$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Shannon.csv") 
+
+save.image(file="mlpWeightDecayML_SS_Shanonn.RData")
+gbmGrid_model_mlpWeightDecayML_SSq0_q2_Shannon <- train(Model ~., data=SSq0_q2_Shannon,
+                                                method=c("mlpWeightDecayML"),
+                                                preProcess=c("scale","center"),
+                                                trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq0_q2_Shannon$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Ar_Shannon_He.csv") 
+save.image(file="mlpWeightDecayML_SSq0_q2_Shannon.RData")
+date()
+gbmGrid_model_mlpWeightDecayML_SSq0_q2_Sh_D <- train(Model ~., data=SSq0_q2_Sh_D,
+                                             method=c("mlpWeightDecayML"),
+                                             preProcess=c("scale","center"),
+                                             trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq0_q2_Sh_D$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Ar_He_Shannon_D.csv") 
+save.image(file="mlpWeightDecayML_q0_q2_Sh_D.RData")
+date()
+gbmGrid_model_mlpWeightDecayML_SSq1_shannon <- train(Model ~., data=SSq1_Shannnon,
+                                             method=c("mlpWeightDecayML"),
+                                             preProcess=c("scale","center"),
+                                             trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq1_shannon$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Shannon_D.csv") 
+save.image(file="mlpWeightDecayML_SSq1_Shannon.RData")
+date()
+gbmGrid_model_mlpWeightDecayML_SSq0_q2_D <- train(Model ~., data=SSall,
+                                          method=c("mlpWeightDecayML"),
+                                          preProcess=c("scale","center"),
+                                          trControl = econtrol,tuneGrid = gbmGrid_mlpWeightDecayML)
+write.csv(gbmGrid_model_mlpWeightDecayML_SSq0_q2_D$results,file = "gbmGrid_model_mlpWeightDecayML_SS_Ar_He_D.csv") 
+save.image(file="mlpWeightDecayML_SSq0_q2_D.RData")
+date()

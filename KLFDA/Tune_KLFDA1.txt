@@ -1,0 +1,257 @@
+library("lfda")
+library("kernlab")
+library("MASS")
+library("caret")
+load("KLFDA_updated_kernelMatrix.RData")
+options(warn=-1)
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SSq0=list()
+#sigma_knn_kfda_SSq0=list()
+sigma_knn_SS=list()
+  for (i in 1:length(sigma)){
+  sigma_knn_SS[[i]]=matrix(data=NA,ncol = 2,nrow = 99)
+  for(j in 1:length(knn)) {
+    sigma_knn_SS[[i]][j,1]=sigma[i]
+  sigma_knn_SS[[i]][j,2]=knn[j]
+  }
+}
+sigma_knn_SS=do.call(rbind, lapply(sigma_knn_SS,as.data.frame))
+for (i in 1:length(sigma)){
+  find_sigma_knn_SSq0[[i]]=list()
+  #sigma_knn_kfda_SSq0[[i]]=list()
+  # sigma_knn_kfda_SSq0[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SSq0[[i]][[j]]=list()
+    #sigma_knn_kfda_SSq0[[i]][[j]]=list()
+    sigma_knn_kfda_SSq0=klfda_1(as.matrix(SSq0_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SSq0=klfda_1(as.matrix(SSq0_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SSq0[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SSq0$bayes_assigment$class,Model)$overall[[1]]
+    
+  }
+}
+find_sigma_knn_SSq0_value=as.data.frame(unlist(find_sigma_knn_SSq0))
+
+sigma_knn_klfda_SSq0_results=cbind(sigma_knn_SS,find_sigma_knn_SSq0_value)
+
+write.csv(sigma_knn_klfda_SSq0_results,file = "Train_accuracy_sigma_knn_klfda_SSq0_results_scaled_r_20.csv")
+
+save.image()
+
+
+find_sigma_knn_SSq1=list()
+#sigma_knn_kfda_SSq1=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SSq1[[i]]=list()
+  #sigma_knn_kfda_SSq1[[i]]=list()
+ # sigma_knn_kfda_SSq1[[i]]=list()
+  for(j in 1:length(knn)) {
+  find_sigma_knn_SSq1[[i]][[j]]=list()
+  #sigma_knn_kfda_SSq1[[i]][[j]]=list()
+  sigma_knn_kfda_SSq1=klfda_1(as.matrix(SSq1_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+  
+  #kfda_SSq0=klfda_1(as.matrix(SSq0_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+  find_sigma_knn_SSq1[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SSq1$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SSq1_value=as.data.frame(unlist(find_sigma_knn_SSq1, data.frame))
+
+sigma_knn_klfda_SSq1_results=cbind(sigma_knn_SS,find_sigma_knn_SSq1_value)
+
+write.csv(sigma_knn_klfda_SSq1_results,file = "Train_accuracy_sigma_knn_klfda_SSq1_results_scaled_r_20.csv")
+print("tuning SSq1 finish")
+save.image()
+date()
+print("Tuning_SSq2")
+date()
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SSq2=list()
+#sigma_knn_kfda_SSq2=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SSq2[[i]]=list()
+  #sigma_knn_kfda_SSq2[[i]]=list()
+  # sigma_knn_kfda_SSq2[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SSq2[[i]][[j]]=list()
+    #sigma_knn_kfda_SSq2[[i]][[j]]=list()
+    sigma_knn_kfda_SSq2=klfda_1(as.matrix(SSq2_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SSq2=klfda_1(as.matrix(SSq2_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SSq2[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SSq2$bayes_assigment$class,Model)$overall[[1]]
+ 
+  }
+}
+find_sigma_knn_SSq2_value=as.data.frame(unlist(find_sigma_knn_SSq2, data.frame))
+
+sigma_knn_klfda_SSq2_results=cbind(sigma_knn_SS,find_sigma_knn_SSq2_value)
+
+write.csv(sigma_knn_klfda_SSq2_results,file = "Train_accuracy_sigma_knn_klfda_SSq2_results_scaled_r_20.csv")
+save.image()
+print("SSq2_finshed")
+date()
+print("tuning SS_trad")
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_trad=list()
+#sigma_knn_kfda_SS_trad=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_trad[[i]]=list()
+  #sigma_knn_kfda_SS_trad[[i]]=list()
+  # sigma_knn_kfda_SS_trad[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_trad[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_trad[[i]][[j]]=list()
+    sigma_knn_kfda_SS_trad=klfda_1(as.matrix(SS_trad_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_trad=klfda_1(as.matrix(SS_trad_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_trad[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_trad$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SS_trad_value=as.data.frame(unlist(find_sigma_knn_SS_trad, data.frame))
+
+sigma_knn_klfda_SS_trad_results=cbind(sigma_knn_SS,find_sigma_knn_SS_trad_value)
+
+write.csv(sigma_knn_klfda_SS_trad_results,file = "Train_accuracy_sigma_knn_klfda_SS_trad_results_scaled_r_20.csv")
+save.image()
+print("tuning SS_trad finished, tuning SS_q0_q2_D1")
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_q0_q2_D1=list()
+#sigma_knn_kfda_SS_q0_q2_D1=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_q0_q2_D1[[i]]=list()
+  #sigma_knn_kfda_SS_q0_q2_D1[[i]]=list()
+  # sigma_knn_kfda_SS_q0_q2_D1[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_q0_q2_D1[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_q0_q2_D1[[i]][[j]]=list()
+    sigma_knn_kfda_SS_q0_q2_D1=klfda_1(as.matrix(SSall_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_q0_q2_D1=klfda_1(as.matrix(SS_q0_q2_D1_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_q0_q2_D1[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_q0_q2_D1$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SS_q0_q2_D1_value=as.data.frame(unlist(find_sigma_knn_SS_q0_q2_D1, data.frame))
+
+sigma_knn_klfda_SS_q0_q2_D1_results=cbind(sigma_knn_SS,find_sigma_knn_SS_q0_q2_D1_value)
+
+write.csv(sigma_knn_klfda_SS_q0_q2_D1_results,file = "Train_accuracy_sigma_knn_klfda_SS_q0_q2_D1_results_scaled_r_20.csv")
+
+save.image()
+
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_Shannon=list()
+#sigma_knn_kfda_SS_Shannon=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_Shannon[[i]]=list()
+  #sigma_knn_kfda_SS_Shannon[[i]]=list()
+  # sigma_knn_kfda_SS_Shannon[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_Shannon[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_Shannon[[i]][[j]]=list()
+    sigma_knn_kfda_SS_Shannon=klfda_1(as.matrix(Shannon_all_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_Shannon=klfda_1(as.matrix(SS_Shannon_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_Shannon[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_Shannon$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SS_Shannon_value=as.data.frame(unlist(find_sigma_knn_SS_Shannon, data.frame))
+
+sigma_knn_klfda_SS_Shannon_results=cbind(sigma_knn_SS,find_sigma_knn_SS_Shannon_value)
+
+write.csv(sigma_knn_klfda_SS_Shannon_results,file = "Train_accuracy_sigma_knn_klfda_SS_Shannon_results_scaled_r_20.csv")
+save.image()
+print("Shannon_finished_tuning_Sh_D")
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_Sh_D=list()
+#sigma_knn_kfda_SS_Sh_D=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_Sh_D[[i]]=list()
+  #sigma_knn_kfda_SS_Sh_D[[i]]=list()
+  # sigma_knn_kfda_SS_Sh_D[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_Sh_D[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_Sh_D[[i]][[j]]=list()
+    sigma_knn_kfda_SS_Sh_D=klfda_1(as.matrix(Sh_1D_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_Sh_D=klfda_1(as.matrix(SS_Sh_D_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_Sh_D[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_Sh_D$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SS_Sh_D_value=as.data.frame(unlist(find_sigma_knn_SS_Sh_D, data.frame))
+
+sigma_knn_klfda_SS_Sh_D_results=cbind(sigma_knn_SS,find_sigma_knn_SS_Sh_D_value)
+
+write.csv(sigma_knn_klfda_SS_Sh_D_results,file = "Train_accuracy_sigma_knn_klfda_SS_Sh_D_results_scaled_r_20.csv")
+save.image()
+print("finishing Sh_D tuning_q0_q2_Shannon")
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_q0_q2_Shannon=list()
+#sigma_knn_kfda_SS_q0_q2_Shannon=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_q0_q2_Shannon[[i]]=list()
+  #sigma_knn_kfda_SS_q0_q2_Shannon[[i]]=list()
+  # sigma_knn_kfda_SS_q0_q2_Shannon[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_q0_q2_Shannon[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_q0_q2_Shannon[[i]][[j]]=list()
+    sigma_knn_kfda_SS_q0_q2_Shannon=klfda_1(as.matrix(SSq0_q2_Shannon_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_q0_q2_Shannon=klfda_1(as.matrix(SS_q0_q2_Shannon_scaled),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_q0_q2_Shannon[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_q0_q2_Shannon$bayes_assigment$class,Model)$overall[[1]]
+ 
+
+  }
+}
+find_sigma_knn_SS_q0_q2_Shannon_value=as.data.frame(unlist(find_sigma_knn_SS_q0_q2_Shannon, data.frame))
+
+sigma_knn_klfda_SS_q0_q2_Shannon_results=cbind(sigma_knn_SS,find_sigma_knn_SS_q0_q2_Shannon_value)
+
+write.csv(sigma_knn_klfda_SS_q0_q2_Shannon_results,file = "Train_accuracy_sigma_knn_klfda_SS_q0_q2_scaled_r_20.csv")
+save.image()
+print("q0_q2_Shannon finished_tuning q0_q2_Sh_D")
+date()
+sigma=c(0.001,0.005,0.01,0.05,0.1,0.5,1,5,10)
+knn=1:99L
+find_sigma_knn_SS_q0_q2_Sh_D=list()
+#sigma_knn_kfda_SS_q0_q2_Sh_D=list()
+
+for (i in 1:length(sigma)){
+  find_sigma_knn_SS_q0_q2_Sh_D[[i]]=list()
+  #sigma_knn_kfda_SS_q0_q2_Sh_D[[i]]=list()
+  # sigma_knn_kfda_SS_q0_q2_Sh_D[[i]]=list()
+  for(j in 1:length(knn)) {
+    find_sigma_knn_SS_q0_q2_Sh_D[[i]][[j]]=list()
+    #sigma_knn_kfda_SS_q0_q2_Sh_D[[i]][[j]]=list()
+    sigma_knn_kfda_SS_q0_q2_Sh_D=klfda_1(as.matrix(SSq0_q2_Sh_D_scaled),as.factor(Model),r=20,kernel=rbfdot(sigma = sigma[i]),tol=1e-30,knn=knn[j],prior=NULL,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    
+    #kfda_SS_q0_q2_Sh_D=klfda_1(as.matrix(SS_q0_q2_Sh_D),as.factor(Model),r=10,kernel=rbfdot(sigma = 1),tol=1e-90,knn=7,prior=c(1,1,1,1,1)/5,usekernel = TRUE,CV=FALSE,fL=0.25,metric="plain")
+    find_sigma_knn_SS_q0_q2_Sh_D[[i]][[j]]=confusionMatrix(sigma_knn_kfda_SS_q0_q2_Sh_D$bayes_assigment$class,Model)$overall[[1]]
+
+  }
+}
+find_sigma_knn_SS_q0_q2_Sh_D_value=as.data.frame(unlist(find_sigma_knn_SS_q0_q2_Sh_D, data.frame))
+
+sigma_knn_klfda_SS_q0_q2_Sh_D_results=cbind(sigma_knn_SS,find_sigma_knn_SS_q0_q2_Sh_D_value)
+
+write.csv(sigma_knn_klfda_SS_q0_q2_Sh_D_results,file = "Train_accuracy_sigma_knn_klfda_SS_q0_q2_Sh_D_results_scaled_r_20.csv")
+print("finished all")
+date()
+save.image()
