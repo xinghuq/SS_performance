@@ -35,7 +35,7 @@ echo "Simulation hier stepping stone is done!"
 date
 
 echo "Simulations for five models are finished"
-data
+date
 
 
 ## we need stratification files for calculating our hier and pwirwise metrics
