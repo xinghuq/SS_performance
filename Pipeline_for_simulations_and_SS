@@ -44,9 +44,27 @@ cp ./str_Island_Panmixia/{pops.txt,Str.txt,region.txt,strpairwise.txt} ./16Panmi
 date
 chmod 755 /Users/xinghu/Test_100rep
 echo " Now we are calculating summary statistics!"
-Rscript Pipeline_hierSS.txt
+
+Rscript Pipeline_Is.txt
 echo " Summary statistics for Island model is done!"
+
+date
+Rscript Pipeline_HierIs.txt
+echo " Summary statistics for HierIsland model is done!"
+
+date
+Rscript Pipeline_Panmixia.txt
+echo " Summary statistics for Panmixia model is done!"
+
+date
+Rscript Pipeline_sp.txt
+echo " Summary statistics for steppingstone model is done!"
+
+date
+Rscript Pipeline_sphie.txt
+echo " Summary statistics for hiersteppingstone model is done!"
 
 date
 echo "finished !"
 date
+
